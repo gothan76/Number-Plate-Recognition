@@ -5,12 +5,19 @@ import matplotlib.pyplot as plt
 from pymongo import MongoClient
 from datetime import datetime
 from shortestpath import find_shortest_path;
-CONNECTION_STRING = "mongodb+srv://kishorebabu200409:kishore26@cluster0.hf4t5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+from getAllUser import find_all_users
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+# MongoDB connection
+CONNECTION_STRING = os.getenv("MONGO_URI")
+# CONNECTION_STRING = "mongodb+srv://gothandaraman314_db_user:XRiPTPoFnyLXnCxX@gothan.mgapygv.mongodb.net/?appName=Gothan"
 
 # Connect to MongoDB Atlas
 client = MongoClient(CONNECTION_STRING)
 db = client['number_plate_recognition']  # Updated database name
-users_collection = db['user']  # Updated collection name
+users_collection = db['users']  # Updated collection name
 user_entry = db['entry']
 
 
@@ -30,7 +37,7 @@ def UserEntry(number_plate):
             print("User Alreafy Entered !")
         else:
             path, nearest_free_space = find_shortest_path()
-            user["allocated Space"] = nearest_free_space
+            user["allocated_space"] = nearest_free_space
             user_entry.insert_one(user)
             result = users_collection.find_one_and_update(
                     {"number_plate": number_plate},
@@ -49,6 +56,9 @@ def UserEntry(number_plate):
 def display_user_details(number_plate):
     """Display user details."""
     number_plate = number_plate.upper()
+    print('np',number_plate)
+    find_all_users()
+
     user = users_collection.find_one({"number_plate": number_plate})
     if user:
         print("\nUser Details:")
@@ -62,7 +72,7 @@ def display_user_details(number_plate):
         print("No User Found")
 
 # Load YOLOv8 model
-model = YOLO('d:/yolov8-license-plate-detection-pytorch-overall-best-and-last-epoch-models-v1/best.pt')
+model = YOLO('D:/Projects/yolov8-license-plate-detection-pytorch-overall-best-and-last-epoch-models-v1/best.pt')
 
 # Initialize EasyOCR reader
 reader = easyocr.Reader(['en'])

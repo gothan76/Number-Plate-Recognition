@@ -1,8 +1,14 @@
 from collections import deque
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+# MongoDB connection
+CONNECTION_STRING = os.getenv("MONGO_URI")
 
 def find_shortest_path():
-    CONNECTION_STRING = "mongodb+srv://kishorebabu200409:kishore26@cluster0.hf4t5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    # CONNECTION_STRING = "mongodb+srv://gothandaraman314_db_user:XRiPTPoFnyLXnCxX@gothan.mgapygv.mongodb.net/?appName=Gothan"
     client = MongoClient(CONNECTION_STRING)
     db = client['number_plate_recognition']
     path_collection = db['parkingspace']

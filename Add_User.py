@@ -1,9 +1,16 @@
-import pymongo
+from pymongo import MongoClient
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
 # MongoDB connection
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["NP_Rec"]
+CONNECTION_STRING = os.getenv("MONGO_URI")
+# CONNECTION_STRING = "mongodb+srv://gothandaraman314_db_user:XRiPTPoFnyLXnCxX@gothan.mgapygv.mongodb.net/?appName=Gothan"
+
+
+# Connect to MongoDB Atlas
+client = MongoClient(CONNECTION_STRING)
+db = client["number_plate_recognition"]
 users_collection = db["users"]
 
 # Function to add a new user and update the database with the QR code path
@@ -19,8 +26,8 @@ def add_new_user():
     # Create user data (without the QR code path for now)
     user_data = {
         "user_id": user_id,
-        "licence_number":license_no,
-        "name": name,
+        "number_plate":license_no,
+        "user_name": name,
         "age": age,
         "mobile_number": mobile_number,
         "wallet_balance": wallet_balance

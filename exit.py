@@ -4,10 +4,15 @@ import cv2
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 from datetime import datetime
-
 from update_freespace import update_space
+from dotenv import load_dotenv
+import os
 
-CONNECTION_STRING = "mongodb+srv://kishorebabu200409:kishore26@cluster0.hf4t5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+load_dotenv()
+# MongoDB connection
+CONNECTION_STRING = os.getenv("MONGO_URI")
+
+# CONNECTION_STRING = "mongodb+srv://gothandaraman314_db_user:XRiPTPoFnyLXnCxX@gothan.mgapygv.mongodb.net/?appName=Gothan"
 
 # rzp_test_GL7rIL2x0NYu1z
 
@@ -17,7 +22,7 @@ CONNECTION_STRING = "mongodb+srv://kishorebabu200409:kishore26@cluster0.hf4t5.mo
 # Connect to MongoDB Atlas
 client = MongoClient(CONNECTION_STRING)
 db = client['number_plate_recognition'] 
-users_collection = db['user']  
+users_collection = db['users']  
 user_entry = db['entry']
 user_exit = db['exit']
 path_collection = db['parkingspace']
@@ -73,7 +78,7 @@ def UserExit(number_plate):
                 user["ExitTime"] = exit_time
             # Remove the '_id' field from the user document before inserting it into the exit collection
             user_exit.insert_one(user)
-            update_space(user["allocated Space"][0],user["allocated Space"][1] )
+            update_space(user["allocated_space"][0],user["allocated_space"][1] )
             user_entry.delete_one({"number_plate": number_plate})
             return True
         else:
@@ -82,7 +87,7 @@ def UserExit(number_plate):
         print("No User Found")
 
 # Load YOLOv8 model
-model = YOLO('d:/yolov8-license-plate-detection-pytorch-overall-best-and-last-epoch-models-v1/best.pt')
+model = YOLO('D:/Projects/yolov8-license-plate-detection-pytorch-overall-best-and-last-epoch-models-v1/best.pt')
 
 # Initialize EasyOCR reader
 reader = easyocr.Reader(['en']) 

@@ -2,8 +2,14 @@ from ultralytics import YOLO
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-CONNECTION_STRING = "mongodb+srv://kishorebabu200409:kishore26@cluster0.hf4t5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+load_dotenv()
+# MongoDB connection
+CONNECTION_STRING = os.getenv("MONGO_URI")
+
+# CONNECTION_STRING = "mongodb+srv://gothandaraman314_db_user:XRiPTPoFnyLXnCxX@gothan.mgapygv.mongodb.net/?appName=Gothan"
 
 # rzp_test_GL7rIL2x0NYu1z
 
